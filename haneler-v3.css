@@ -1,0 +1,53 @@
+/* ---------- Haneler v3 ---------- */
+.v3-mono { font-family: var(--font-mono); }
+.v3-muted { font-size: 11.5px; color: var(--text-muted); }
+.v3-small { font-size: 12px; color: var(--text-secondary); line-height: 1.55; margin: 8px 0 0; }
+.v3-small strong { color: var(--text-primary); font-weight: 500; }
+.v3-badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.v3-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.v3-name { font-weight: 600; font-size: 14.5px; margin: 0; }
+.v3-name a { color: inherit; cursor: pointer; text-decoration: none; }
+.v3-name a:hover { color: var(--teal); }
+.v3-meta { font-size: 12px; color: var(--text-secondary); margin: 2px 0 0; }
+.v3-members { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 12px; }
+.v3-member { margin: 0; }
+.v3-pgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.v3-pgrid > div { background: var(--bg-page); border-radius: var(--radius-sm); padding: 7px 8px; }
+.v3-pgrid .k { font-size: 10.5px; color: var(--text-muted); margin: 0; }
+.v3-pgrid .v { font-family: var(--font-mono); font-size: 14px; font-weight: 500; margin: 2px 0 0; }
+.v3-pgrid .bind { outline: 1.5px solid var(--coral-bright); background: var(--coral-bg); }
+.v3-strip { position: relative; height: 26px; margin: 24px 0 2px; }
+.v3-zone { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 500; }
+.v3-zone:first-child { border-radius: 6px 0 0 6px; }
+.v3-zone:nth-child(3) { border-radius: 0 6px 6px 0; }
+.v3-mark { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--navy); transform: translateX(-1px); }
+.v3-mark span { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 11px; font-weight: 600; background: var(--navy); color: #fff; padding: 0 5px; border-radius: 4px; white-space: nowrap; }
+.v3-mark.alt span { top: auto; bottom: -20px; background: #fff; color: var(--text-primary); border: 1px solid var(--border-strong); }
+.v3-axis { position: relative; height: 14px; margin: 4px 0 6px; }
+.v3-axis span { position: absolute; transform: translateX(-50%); font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+.v3-goal { border-left: 4px solid var(--teal); margin-bottom: 12px; }
+.v3-chain { display: grid; grid-template-columns: 1.3fr repeat(4, 1fr); font-size: 12.5px; border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 10px; }
+.v3-chain > div { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+.v3-chain > div:nth-last-child(-n+5) { border-bottom: 0; }
+.v3-chain .h { background: var(--bg-page); color: var(--text-muted); font-size: 11px; }
+.v3-chain .n { font-family: var(--font-mono); }
+.v3-chain .min { font-weight: 600; color: var(--coral); }
+.v3-chain .t { background: var(--teal-bg); font-weight: 600; }
+.v3-gtrack { position: relative; height: 10px; background: var(--bg-page); border-radius: 6px; overflow: hidden; margin: 14px 0 6px; }
+.v3-gband { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(45deg, rgba(0,148,134,.12), rgba(0,148,134,.12) 4px, rgba(0,148,134,.26) 4px, rgba(0,148,134,.26) 8px); }
+.v3-gfill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--teal); border-radius: 6px; opacity: .85; }
+.v3-grow { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12.5px; color: var(--text-secondary); }
+.v3-grow-r { display: flex; gap: 8px; align-items: center; }
+.v3-action { margin-top: 10px; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 12.5px; line-height: 1.5; }
+.v3-action.amber { background: var(--amber-bg); }
+.v3-action.teal { background: var(--teal-bg); }
+.v3-action.coral { background: var(--coral-bg); }
+.v3-at { font-weight: 600; margin: 0 0 2px; }
+.v3-ind { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.v3-ind:last-child { border-bottom: 0; }
+@media (max-width: 860px) {
+  .v3-members { grid-template-columns: 1fr; }
+  .v3-pgrid { grid-template-columns: repeat(3, 1fr); }
+  .v3-chain { font-size: 11.5px; }
+  .v3-chain > div { padding: 6px 6px; }
+}

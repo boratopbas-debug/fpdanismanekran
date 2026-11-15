@@ -3,467 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Danışman Masası · Haneler</title>
+<title>Danışman Masası</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --navy:#0B1512; --teal:#009486; --teal-soft:#DDF3EC; --amber:#C68A1F; --amber-soft:#FDF3E0; --coral:#E5533D; --coral-soft:#FDE7E4;
-  --bg-page:#F6F3EC; --bg-card:#FFFFFF; --border:#E6E1D6; --border-strong:#CFC8B8;
-  --text-primary:#14201C; --text-secondary:#55615C; --text-muted:#8A938F;
-  --font-sans:'IBM Plex Sans',system-ui,sans-serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
-  --radius:12px; --radius-sm:8px;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:var(--font-sans);background:var(--bg-page);color:var(--text-primary);font-size:14px;line-height:1.45}
-p{margin:0}
-.app-shell{display:flex;min-height:100vh}
-.sidebar{width:236px;flex-shrink:0;background:var(--navy);color:#E8EFEC;display:flex;flex-direction:column;padding:20px 14px;position:sticky;top:0;height:100vh}
-.sidebar-brand{display:flex;gap:10px;align-items:center;padding:0 6px 22px}
-.brand-mark{width:34px;height:34px;border-radius:8px;background:var(--teal);display:grid;place-items:center;font-weight:600;font-size:13px;color:#fff}
-.brand-name{font-weight:600;font-size:14px}.brand-sub{font-size:11.5px;color:#93A6A0}
-.sidebar-nav{display:flex;flex-direction:column;gap:2px;flex:1}
-.nav-item{display:flex;align-items:center;gap:10px;background:none;border:0;color:#C6D3CE;font:inherit;font-size:13.5px;padding:9px 10px;border-radius:8px;cursor:pointer;text-align:left}
-.nav-item:hover{background:rgba(255,255,255,.06)}
-.nav-item.active{background:rgba(0,148,134,.22);color:#fff}
-.nav-icon{width:18px;height:18px}
-.nav-badge{margin-left:auto;background:var(--coral);color:#fff;font-size:11px;font-weight:600;border-radius:10px;padding:1px 7px}
-.advisor-chip{display:flex;gap:10px;align-items:center;padding:10px 6px 0;border-top:1px solid rgba(255,255,255,.08)}
-.advisor-avatar{width:32px;height:32px;border-radius:50%;background:#1E3A33;display:grid;place-items:center;font-size:12px;font-weight:600}
-.advisor-name{font-size:13px}.advisor-role{font-size:11.5px;color:#93A6A0}
-.content{flex:1;padding:28px 34px 60px;max-width:1180px}
-.hamburger{display:none}
-
-.page-title{font-size:21px;font-weight:600}
-.page-sub{color:var(--text-secondary);margin:3px 0 20px}
-.section-label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin:26px 0 10px}
-.panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px}
-.mono{font-family:var(--font-mono)}
-.badge{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.b-teal{background:var(--teal-soft);color:#0F766E}.b-amber{background:var(--amber-soft);color:#97701F}.b-coral{background:var(--coral-soft);color:#B5402E}.b-grey{background:#EEEBE3;color:var(--text-secondary)}
-.note{font-size:12.5px;color:var(--text-secondary);background:var(--bg-page);border-radius:var(--radius-sm);padding:10px 12px;line-height:1.55}
-.note strong{color:var(--text-primary);font-weight:500}
-
-/* özet şeridi */
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
-.stat-k{font-size:12px;color:var(--text-muted)}.stat-v{font-family:var(--font-mono);font-size:20px;font-weight:500;margin-top:4px}.stat-s{font-size:11.5px;color:var(--text-secondary);margin-top:2px}
-
-/* hane tablosu */
-table{width:100%;border-collapse:collapse}
-th{font-size:11.5px;font-weight:500;color:var(--text-muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
-td{padding:11px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
-tr.row{cursor:pointer}tr.row:hover td{background:#FBFAF6}
-tr.row.sel td{background:#F1F8F5}
-td.num{font-family:var(--font-mono);text-align:right}th.num{text-align:right}
-
-/* üyeler */
-.member-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.member{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
-.member-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.member-name{font-weight:600;font-size:14.5px}.member-meta{font-size:12px;color:var(--text-secondary)}
-.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.pcell{background:var(--bg-page);border-radius:6px;padding:7px 8px}
-.pcell .k{font-size:10.5px;color:var(--text-muted)}.pcell .v{font-family:var(--font-mono);font-size:14px;font-weight:500;margin-top:2px}
-.pcell.bind{outline:1.5px solid var(--coral);background:#FFF6F4}
-
-.risk-strip{position:relative;height:26px;margin:22px 0 2px}
-.zone{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500}
-.zone:first-child{border-radius:6px 0 0 6px}.zone:nth-child(3){border-radius:0 6px 6px 0}
-.mark{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--navy);transform:translateX(-1px)}
-.mark span{position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;font-weight:600;background:var(--navy);color:#fff;padding:0 5px;border-radius:4px;white-space:nowrap}
-.mark.ghost{background:var(--text-muted)}.mark.ghost span{background:#fff;color:var(--text-secondary);border:1px solid var(--border-strong);top:auto;bottom:-19px}
-.axis{position:relative;height:14px;margin-bottom:6px}.axis span{position:absolute;transform:translateX(-50%);font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
-
-/* hedef kartı */
-.goal{background:var(--bg-card);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px}
-.goal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
-.goal-name{font-weight:600;font-size:14.5px}.goal-meta{font-size:12px;color:var(--text-secondary);margin-top:2px}
-.chain{display:grid;grid-template-columns:1.3fr repeat(4,1fr);font-size:12.5px;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:12px}
-.chain>div{padding:7px 10px;border-bottom:1px solid var(--border)}
-.chain>div:nth-last-child(-n+5){border-bottom:0}
-.chain .h{background:var(--bg-page);color:var(--text-muted);font-size:11px}
-.chain .v{font-family:var(--font-mono)}
-.chain .min{font-weight:600;color:#B5402E}
-.chain .tot{background:#F1F8F5;font-weight:600}
-.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:4px 0 8px}
-.alloc{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font-size:11.5px;color:var(--text-secondary)}
-.alloc b{display:block;font-family:var(--font-mono);font-size:13px;color:var(--text-primary);font-weight:500}
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--text-secondary);margin-bottom:10px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-.gtrack{position:relative;height:10px;background:var(--bg-page);border-radius:6px;overflow:hidden;margin:12px 0 6px}
-.gband{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,rgba(0,148,134,.12),rgba(0,148,134,.12) 4px,rgba(0,148,134,.26) 4px,rgba(0,148,134,.26) 8px)}
-.gfill{position:absolute;left:0;top:0;bottom:0;background:var(--teal);border-radius:6px;opacity:.85}
-.grow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--text-secondary);gap:10px;flex-wrap:wrap}
-.action{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:10px 12px;border-radius:var(--radius-sm);font-size:12.5px;line-height:1.5}
-.action.amber{background:var(--amber-soft)}.action.teal{background:var(--teal-soft)}.action.coral{background:var(--coral-soft)}
-.action .t{font-weight:600}
-.btn{font:inherit;font-size:12.5px;border:1px solid var(--border-strong);background:#fff;border-radius:7px;padding:5px 11px;cursor:pointer;white-space:nowrap}
-.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
-.ind-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;gap:10px}
-.ind-row:last-child{border-bottom:0}
-.empty{padding:60px 20px;text-align:center;color:var(--text-secondary)}
-
-@media (max-width:900px){
-  .sidebar{position:fixed;left:-260px;z-index:20;transition:left .2s}.sidebar.open{left:0}
-  .hamburger{display:grid;place-items:center;position:fixed;top:12px;right:12px;z-index:30;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:#fff}
-  .content{padding:20px 16px 60px}
-  .stat-grid,.member-grid{grid-template-columns:1fr 1fr}
-  .member-grid{grid-template-columns:1fr}
-  .pgrid{grid-template-columns:repeat(3,1fr)}
-  .chain{grid-template-columns:1.2fr repeat(4,1fr);font-size:11.5px}
-  .alloc{grid-template-columns:repeat(3,1fr)}
-  .hide-m{display:none}
-}
-</style>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="haneler-v3.css">
 </head>
 <body>
+
 <div class="app-shell">
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><div class="brand-mark">DM</div><div><p class="brand-name">Danışman Masası</p><p class="brand-sub">Finansal planlama sistemi</p></div></div>
-    <div class="sidebar-nav">
-      <button class="nav-item" data-route="ana-panel"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 10L10 3L17 10M5 8V16.5H9V12H11V16.5H15V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ana panel</span></button>
-      <button class="nav-item" data-route="musteriler"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="6.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="14" cy="7.5" r="2" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 16.5C2.5 13.5 4.5 11.5 7.5 11.5C10 11.5 11.8 12.9 12.3 15M12.5 12C14.8 12.2 16.5 13.6 16.9 16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Müşterilerim</span></button>
-      <button class="nav-item" data-route="onay-kuyrugu"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="3" width="12" height="14" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 8.5L9 10.5L13.5 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Onay kuyruğu</span><span class="nav-badge" id="approval-count">4</span></button>
-      <button class="nav-item" data-route="portfoy"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 16.5V9.5M8 16.5V5.5M13 16.5V11.5M17.5 16.5H2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Portföy yönetimi</span></button>
-      <button class="nav-item" data-route="raporlar"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M6 2.5H12L15.5 6V16C15.5 16.55 15.05 17 14.5 17H6C5.45 17 5 16.55 5 16V3.5C5 2.95 5.45 2.5 6 2.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7.5 9.5H12.5M7.5 12.5H12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Raporlar</span></button>
-      <button class="nav-item" data-route="haneler"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3L17 9V16.5C17 16.78 16.78 17 16.5 17H12.5V12H7.5V17H3.5C3.22 17 3 16.78 3 16.5V9Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg><span>Haneler</span></button>
+
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">DM</div>
+      <div>
+        <p class="brand-name">Danışman Masası</p>
+        <p class="brand-sub">Finansal planlama sistemi</p>
+      </div>
     </div>
-    <div class="advisor-chip"><div class="advisor-avatar">BK</div><div><p class="advisor-name">Bora K.</p><p class="advisor-role">Finansal danışman</p></div></div>
+
+    <div class="sidebar-nav">
+      <button class="nav-item" data-route="ana-panel">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 10L10 3L17 10M5 8V16.5C5 16.78 5.22 17 5.5 17H8.5C8.78 17 9 16.78 9 16.5V12.5C9 12.22 9.22 12 9.5 12H10.5C10.78 12 11 12.22 11 12.5V16.5C11 16.78 11.22 17 11.5 17H14.5C14.78 17 15 16.78 15 16.5V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Ana panel</span>
+      </button>
+      <button class="nav-item" data-route="musteriler">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="6.5" r="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="14" cy="7.5" r="2" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 16.5C2.5 13.5 4.5 11.5 7.5 11.5C10 11.5 11.8 12.9 12.3 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12.5 12C14.8 12.2 16.5 13.6 16.9 16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span>Müşterilerim</span>
+      </button>
+      <button class="nav-item" data-route="onay-kuyrugu">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><rect x="4" y="3" width="12" height="14" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 8.5L9 10.5L13.5 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Onay kuyruğu</span>
+        <span class="nav-badge" id="approval-count">4</span>
+      </button>
+      <button class="nav-item" data-route="portfoy">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 16.5V9.5M8 16.5V5.5M13 16.5V11.5M17.5 16.5H2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Portföy yönetimi</span>
+      </button>
+      <button class="nav-item" data-route="raporlar">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M6 2.5H12L15.5 6V16C15.5 16.55 15.05 17 14.5 17H6C5.45 17 5 16.55 5 16V3.5C5 2.95 5.45 2.5 6 2.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7.5 9.5H12.5M7.5 12.5H12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span>Raporlar</span>
+      </button>
+      <button class="nav-item" data-route="haneler">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 9L10 3L17 9V16.5C17 16.78 16.78 17 16.5 17H12.5V12H7.5V17H3.5C3.22 17 3 16.78 3 16.5V9Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span>Haneler</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="advisor-chip">
+        <div class="advisor-avatar">BK</div>
+        <div>
+          <p class="advisor-name">Bora K.</p>
+          <p class="advisor-role">Finansal danışman</p>
+        </div>
+      </div>
+    </div>
   </nav>
-  <main class="content" id="content"></main>
-  <button class="hamburger" id="hamburger" aria-label="Menüyü aç"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+
+  <main class="content" id="content">
+  </main>
+
+  <button class="hamburger" id="hamburger" aria-label="Menüyü aç">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+
 </div>
 
-<script>
-/* ===================== Hesaplama motoru — Finansal Planlama Metodolojisi v3 =====================
-   Müşteri portalındaki engine.js ile birebir aynı. Ölçek 1–7.
-   B.2.2 Kapasite · B.2.2.1 Likidite tavanı · B.2.3 Yıllık davranış · B.3 Kural 1 · B.4 Vade tavanı
-   B.5 Eşikler / model portföyler · B.6 Taktiksel katman · B.7 Rampa, hedef tipi · B.9 Guardrails · B.9.6 İhtiyaç tavanı */
-const PARAM = {
-  surum: 'v3', T1: 2.95, T2: 4.15,
-  KAP_W: { likidite: 0.25, gelir: 0.25, yukum: 0.20, netvarlik: 0.30 },
-  DAVRANIS_K: 1,
-  PORT: {
-    P1: { hisse: 25.00, altin: 7.50, dibs: 27.00, mevduat: 27.00, ost: 13.50 },
-    P2: { hisse: 40.00, altin: 12.00, dibs: 13.09, mevduat: 21.82, ost: 13.09 },
-    P3: { hisse: 55.00, altin: 7.50, dibs: 7.50, mevduat: 15.00, ost: 15.00 },
-  },
-  PORT_AD: { P1: 'Temkinli', P2: 'Dengeli', P3: 'Atak' },
-  KOMITE: { donem: '2026 4. çeyrek', karar: { P1: 30, P2: 45, P3: 60 } },
-  VARSAYIM: { P1: { r: 0.015, s: 0.05 }, P2: { r: 0.0309, s: 0.1188 }, P3: { r: 0.045, s: 0.16 } },
-  GUARD: { altGiris: 0.70, hedef: 0.80, ustGiris: 0.95 },
-  REBALANS_ESIK: 5,
-};
-function likiditeBileseni(ay){ if(ay<3)return 1; if(ay<6)return 2; if(ay<12)return 3; if(ay<24)return 4; return 5; }
-function kapasiteSkoru(k){ const W=PARAM.KAP_W; const k5=W.likidite*likiditeBileseni(k.tamponAy)+W.gelir*k.gelir+W.yukum*k.yukum+W.netvarlik*k.netvarlik; return { k5, k7: 1+(k5-1)*1.5 }; }
-function likiditeTavani(ay){ if(ay<1)return 2.5; return Math.min(7, 2.5+(ay-1)/5*4.5); }
-function davranisSkoru(anket,kap7,olcumler){ let d=Math.min(anket,kap7), kaynak='varsayılan'; for(const o of olcumler){ d=Math.min(7,Math.max(1,d+PARAM.DAVRANIS_K*o.M)); kaynak='gözlem'; } return { deger:d, kaynak }; }
-function kural1(a,b,c){ const [mn,md,mx]=[a,b,c].sort((x,y)=>x-y); return mn+(md-mn)/3+(mx-md)/6; }
-function riskProfili(c){
-  const kap=kapasiteSkoru(c.kapasite), dav=davranisSkoru(c.anket,kap.k7,c.davranisOlcumleri);
-  const k1=kural1(c.anket,kap.k7,dav.deger), lt=likiditeTavani(c.kapasite.tamponAy);
-  return { anket:c.anket, kap5:kap.k5, kap7:kap.k7, davranis:dav.deger, davranisKaynak:dav.kaynak, kural1:k1, likiditeTavani:lt, likiditeBagliyor:lt<k1, risk:Math.min(k1,lt) };
-}
-function vadeBandi(v){ return v<=1?1:v<=3?2:v<=5?3:v<=10?4:5; }
-function vadeTavani(v){ return Math.min(7, 1+1.5*vadeBandi(v)); }
-function hedefVadesi(g){ if(g.tip==='harcama_akisi') return g.baslangicaYil>0 ? g.baslangicaYil+g.akisYil/2 : g.kalanAkisYil/2; return g.kalanAy/12; }
-function portfoySec(f){ return f<PARAM.T1?'P1':f<PARAM.T2?'P2':'P3'; }
-function overlayAgirligi(v){ return Math.min(1,Math.max(0,(v-2)/2)); }
-function rampaCarpani(kalanAy){ return Math.min(Math.ceil(kalanAy/3)/4,1); }
-function lrm(vals){ const raw=vals.map(v=>v*100), fl=raw.map(Math.floor); let rem=10000-fl.reduce((a,b)=>a+b,0); raw.map((x,i)=>[x-fl[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,rem).forEach(([,i])=>fl[i]++); return fl.map(x=>x/100); }
-function allocation(p,hisse,rampa=1){
-  const b=PARAM.PORT[p]; if(hisse===undefined)hisse=b.hisse;
-  const pool0=b.dibs+b.mevduat+b.ost, pool=100-hisse-b.altin;
-  const d={ dibs:b.dibs*pool/pool0, mevduat:b.mevduat*pool/pool0, ost:b.ost*pool/pool0 };
-  const h=hisse*rampa; d.mevduat+=hisse-h;
-  const [H,A,D,M,O]=lrm([h,b.altin,d.dibs,d.mevduat,d.ost]); return { hisse:H, altin:A, dibs:D, mevduat:M, ost:O };
-}
-/* finalOverride: hane ortak hedeflerinde, üyelerin hedef bazlı Final_Skoru'larının min()'i */
-function goalResult(rp,g,finalOverride){
-  const v=hedefVadesi(g), vt=vadeTavani(v);
-  const final = finalOverride!==undefined ? finalOverride : Math.min(rp.risk, vt, g.ihtiyacTavani||7);
-  const p=g.donukPortfoy||portfoySec(final), notr=PARAM.PORT[p].hisse;
-  const teslim=g.tip==='toplu_odeme'&&g.kalanAy<=12;
-  let hisse, ov=0, rampa=1;
-  if(teslim){ rampa=rampaCarpani(g.kalanAy); hisse=notr; }
-  else { ov=overlayAgirligi(v); hisse=notr+(PARAM.KOMITE.karar[p]-notr)*ov; }
-  return { vade:v, vadeBandi:vadeBandi(v), vadeTavani:vt, final, portfoy:p, overlay:ov, teslim, rampa, alloc:allocation(p,hisse,rampa) };
-}
-function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
-function normalSeri(n,seed){ const r=mulberry32(seed), z=new Float64Array(n); for(let i=0;i<n;i+=2){ const u1=Math.max(r(),1e-12),u2=r(),m=Math.sqrt(-2*Math.log(u1)); z[i]=m*Math.cos(2*Math.PI*u2); if(i+1<n)z[i+1]=m*Math.sin(2*Math.PI*u2); } return z; }
-const _Z={};
-function pBasari(p,birikim,katkiAy,hedef,yil,N=4000){
-  const {r,s}=PARAM.VARSAYIM[p]; const sig2=Math.log(1+(s*s)/((1+r)*(1+r))), mu=Math.log(1+r)-sig2/2, sig=Math.sqrt(sig2);
-  const adim=Math.max(1,Math.round(yil)); const key=N*adim; const z=_Z[key]||(_Z[key]=normalSeri(key,20261113));
-  let ok=0; for(let i=0;i<N;i++){ let B=birikim; for(let t=0;t<adim;t++){ const g=Math.exp(mu+sig*z[i*adim+t]); B=B*g+12*katkiAy*Math.sqrt(g); } if(B>=hedef)ok++; } return ok/N;
-}
-function birikimEsigi(p,katkiAy,hedef,yil,hedefP){ let lo=0,hi=hedef; for(let i=0;i<30;i++){ const m=(lo+hi)/2; if(pBasari(p,m,katkiAy,hedef,yil)<hedefP)lo=m; else hi=m; } return hi; }
-function guardrail(g,gr){
-  if(g.hedefTutar===undefined||!g.aylikKatki) return null;
-  const P=pBasari(gr.portfoy,g.birikenTutar,g.aylikKatki,g.hedefTutar,gr.vade);
-  const alt=birikimEsigi(gr.portfoy,g.aylikKatki,g.hedefTutar,gr.vade,PARAM.GUARD.altGiris);
-  const ust=birikimEsigi(gr.portfoy,g.aylikKatki,g.hedefTutar,gr.vade,PARAM.GUARD.ustGiris);
-  const durum=P<PARAM.GUARD.altGiris?'alt':P>PARAM.GUARD.ustGiris?'ust':'yolunda';
-  return { durum, altEsik:alt, ustEsik:ust, _p:P };
-}
-/* B.9.6 — üst eşikte: mevcut katkıyla P ≥ %95 veren en düşük model portföy (öneri; danışman + müşteri onayı) */
-function ihtiyacTavaniOnerisi(g,gr){
-  const sira=['P1','P2','P3'], i=sira.indexOf(gr.portfoy);
-  for(let j=0;j<i;j++){ const p=sira[j]; if(pBasari(p,g.birikenTutar,g.aylikKatki,g.hedefTutar,gr.vade)>=PARAM.GUARD.ustGiris) return p; }
-  return null;
-}
-
-/* ===================== Hane verisi (pilot örnekleri) ===================== */
-const HANELER = [
-  { id:'yilmaz', ad:'Yılmaz hanesi', sube:'Eskişehir', sonGozden:'12 Kas 2026',
-    uyeler:[
-      { id:'ayse', ad:'Ayşe Yılmaz', rol:'Hane temsilcisi', anket:4, kapasite:{tamponAy:14,gelir:3,yukum:3,netvarlik:3}, davranisOlcumleri:[{tarih:'Kas 2026',M:0}], sonrakiOlcum:'Kas 2027', varlik:850000 },
-      { id:'murat', ad:'Murat Yılmaz', rol:'Eş', anket:6, kapasite:{tamponAy:2,gelir:4,yukum:2,netvarlik:3}, davranisOlcumleri:[], sonrakiOlcum:'Mar 2027', varlik:410000 },
-    ],
-    ortak:[
-      { name:'Ev peşinatı', tip:'toplu_odeme', kalanAy:36, vadeLabel:'3 yıl', hedefTutar:800000, birikenTutar:340000, aylikKatki:14500 },
-      { name:'Çocuk eğitimi', tip:'toplu_odeme', kalanAy:168, vadeLabel:'14 yıl', hedefTutar:1200000, birikenTutar:150000, aylikKatki:5000 },
-    ],
-    bireysel:[
-      { uye:'ayse', name:'Emeklilik', tip:'harcama_akisi', baslangicaYil:22, akisYil:25, vadeLabel:'22 yıl sonra başlıyor', birikenTutar:510000 },
-      { uye:'murat', name:'Emeklilik', tip:'harcama_akisi', baslangicaYil:25, akisYil:20, vadeLabel:'25 yıl sonra başlıyor', birikenTutar:220000 },
-    ] },
-  { id:'demir', ad:'Demir hanesi', sube:'Eskişehir', sonGozden:'28 Eki 2026',
-    uyeler:[
-      { id:'kemal', ad:'Kemal Demir', rol:'Hane temsilcisi', anket:5, kapasite:{tamponAy:30,gelir:4,yukum:4,netvarlik:4}, davranisOlcumleri:[{tarih:'Eki 2026',M:0.5}], sonrakiOlcum:'Eki 2027', varlik:3400000 },
-      { id:'selin', ad:'Selin Demir', rol:'Eş', anket:3, kapasite:{tamponAy:8,gelir:3,yukum:4,netvarlik:3}, davranisOlcumleri:[], sonrakiOlcum:'Oca 2027', varlik:1150000 },
-    ],
-    ortak:[
-      { name:'Yazlık', tip:'toplu_odeme', kalanAy:60, vadeLabel:'5 yıl', hedefTutar:2500000, birikenTutar:1950000, aylikKatki:20000 },
-      { name:'Ortak emeklilik', tip:'harcama_akisi', baslangicaYil:15, akisYil:25, vadeLabel:'15 yıl sonra başlıyor', birikenTutar:1800000 },
-    ],
-    bireysel:[
-      { uye:'kemal', name:'Tekne', tip:'toplu_odeme', kalanAy:30, vadeLabel:'2,5 yıl', hedefTutar:900000, birikenTutar:380000, aylikKatki:12000 },
-    ] },
-  { id:'aksoy', ad:'Aksoy hanesi', sube:'Eskişehir', sonGozden:'3 Kas 2026',
-    uyeler:[
-      { id:'hakan', ad:'Hakan Aksoy', rol:'Hane temsilcisi', anket:3, kapasite:{tamponAy:0.5,gelir:3,yukum:3,netvarlik:2}, davranisOlcumleri:[{tarih:'Kas 2026',M:-0.5}], sonrakiOlcum:'Kas 2027', varlik:640000 },
-      { id:'zeynep', ad:'Zeynep Aksoy', rol:'Eş', anket:4, kapasite:{tamponAy:6,gelir:3,yukum:3,netvarlik:2}, davranisOlcumleri:[], sonrakiOlcum:'Haz 2027', varlik:300000 },
-    ],
-    ortak:[
-      { name:'Ev yenileme', tip:'toplu_odeme', kalanAy:10, vadeLabel:'10 ay', hedefTutar:300000, birikenTutar:215000, aylikKatki:6000 },
-    ],
-    bireysel:[
-      { uye:'zeynep', name:'Araba', tip:'toplu_odeme', kalanAy:42, vadeLabel:'3,5 yıl', hedefTutar:650000, birikenTutar:180000, aylikKatki:7000 },
-    ] },
-];
-
-/* ===================== Hane hesapları ===================== */
-function haneHesapla(h){
-  if(h._c) return h._c;
-  const rp={}; h.uyeler.forEach(u=>rp[u.id]=riskProfili(u));
-  const ortak=h.ortak.map(g=>{
-    const v=hedefVadesi(g), vt=vadeTavani(v);
-    const uyeFinal=h.uyeler.map(u=>({ uye:u, risk:rp[u.id].risk, vt, final:Math.min(rp[u.id].risk, vt, g.ihtiyacTavani||7) }));
-    const haneFinal=Math.min(...uyeFinal.map(x=>x.final));
-    const baglayan=uyeFinal.filter(x=>x.final===haneFinal).map(x=>x.uye);
-    const gr=goalResult(null,g,haneFinal);
-    const tekBasina=uyeFinal.map(x=>({ uye:x.uye, p:portfoySec(x.final) }));
-    const gd=guardrail(g,gr);
-    const ihtiyac = gd && gd.durum==='ust' ? ihtiyacTavaniOnerisi(g,gr) : null;
-    let nedeni='risk';
-    if(vt<=Math.min(...uyeFinal.map(x=>x.risk))) nedeni='vade';
-    else if(baglayan.some(u=>rp[u.id].likiditeBagliyor)) nedeni='likidite';
-    return { g, gr, uyeFinal, haneFinal, baglayan, tekBasina, gd, ihtiyac, nedeni };
-  });
-  const bireysel=h.bireysel.map(g=>{ const r=rp[g.uye]; const gr=goalResult(r,g); const gd=guardrail(g,gr); return { g, gr, gd, uye:h.uyeler.find(u=>u.id===g.uye), ihtiyac: gd&&gd.durum==='ust'?ihtiyacTavaniOnerisi(g,gr):null }; });
-  const aksiyon=[...ortak,...bireysel].filter(x=>x.gd&&x.gd.durum!=='yolunda').length + h.uyeler.filter(u=>rp[u.id].likiditeBagliyor).length;
-  return h._c={ rp, ortak, bireysel, aksiyon };
-}
-
-/* ===================== Biçimlendirme ===================== */
-const fmt2=n=>n.toFixed(2).replace('.',',');
-const fmtTL=n=>Math.round(n).toLocaleString('tr-TR')+' TL';
-const fmtBin=n=>(Math.round(n/1000)*1000).toLocaleString('tr-TR')+' TL';
-const fmtMn=n=>n>=1e6?(n/1e6).toFixed(2).replace('.',',')+' mn TL':Math.round(n/1000).toLocaleString('tr-TR')+' bin TL';
-const fmtPct=n=>'%'+(Math.round(n*100)/100).toString().replace('.',',');
-const ASSET_COLORS={ hisse:'#7F77DD', altin:'#EF9F27', dibs:'#5DCAA5', mevduat:'#B4B2A9', ost:'#F0997B' };
-const ASSET_LABELS={ hisse:'Hisse', altin:'Kıymetli maden', dibs:'DİBS', mevduat:'Mevduat / PPF', ost:'ÖST' };
-const PC={ P1:{bg:'#DDF3EC',text:'#0F766E',bar:'#009486'}, P2:{bg:'#FDF3E0',text:'#97701F',bar:'#C68A1F'}, P3:{bg:'#FDE7E4',text:'#B5402E',bar:'#E5533D'} };
-const portBadge=(p,extra)=>`<span class="badge" style="background:${PC[p].bg};color:${PC[p].text}">${p} ${PARAM.PORT_AD[p]}${extra?' · '+extra:''}</span>`;
-const stackedBar=a=>`<div class="bar">${Object.keys(ASSET_COLORS).map(k=>`<div style="width:${a[k]}%;background:${ASSET_COLORS[k]}" title="${ASSET_LABELS[k]} ${fmtPct(a[k])}"></div>`).join('')}</div>`;
-const allocRow=a=>`<div class="alloc">${Object.keys(ASSET_COLORS).map(k=>`<div><b>${fmtPct(a[k])}</b>${ASSET_LABELS[k]}</div>`).join('')}</div>`;
-const legend=()=>`<div class="legend">${Object.keys(ASSET_LABELS).map(k=>`<span><i style="background:${ASSET_COLORS[k]}"></i>${ASSET_LABELS[k]}</span>`).join('')}<span><i style="background:repeating-linear-gradient(45deg,rgba(0,148,134,.2),rgba(0,148,134,.2) 2px,rgba(0,148,134,.4) 2px,rgba(0,148,134,.4) 4px)"></i>Plan yolunda bandı</span></div>`;
-const ilkAd=u=>u.ad.split(' ')[0];
-
-function riskStrip(markers){
-  const x=v=>(v-1)/6*100;
-  const zones=[['P1',1,PARAM.T1],['P2',PARAM.T1,PARAM.T2],['P3',PARAM.T2,7]];
-  return `<div class="risk-strip">${zones.map(([p,a,b])=>`<div class="zone" style="left:${x(a)}%;width:${x(b)-x(a)}%;background:${PC[p].bg};color:${PC[p].text}">${p} ${PARAM.PORT_AD[p]}</div>`).join('')}
-    ${markers.map(m=>`<div class="mark ${m.ghost?'ghost':''}" style="left:${x(m.v)}%"><span>${m.label}</span></div>`).join('')}</div>
-    <div class="axis">${[1,2,3,4,5,6,7].map(n=>`<span style="left:${x(n)}%">${n}</span>`).join('')}</div>`;
-}
-
-/* ===================== Görünümler ===================== */
-function viewHaneler(seciliId){
-  const toplamVarlik=HANELER.reduce((s,h)=>s+h.uyeler.reduce((a,u)=>a+u.varlik,0),0);
-  const toplamOrtak=HANELER.reduce((s,h)=>s+h.ortak.length,0);
-  const hesap=HANELER.map(haneHesapla);
-  const aksiyonlu=hesap.filter(c=>c.aksiyon>0).length;
-  const sel=HANELER.find(h=>h.id===seciliId)||HANELER[0];
-  return `
-    <p class="page-title">Haneler</p>
-    <p class="page-sub">Ortak hedefler hane bazında yönetilir: her üye kendi zincirini çalıştırır, ortak hedefte en düşük Final_Skoru bağlar. Metodoloji ${PARAM.surum} · Komite kararı ${PARAM.KOMITE.donem}</p>
-
-    <div class="stat-grid">
-      <div class="stat"><p class="stat-k">Hane</p><p class="stat-v">${HANELER.length}</p><p class="stat-s">${HANELER.reduce((s,h)=>s+h.uyeler.length,0)} üye</p></div>
-      <div class="stat"><p class="stat-k">Ortak hedef</p><p class="stat-v">${toplamOrtak}</p><p class="stat-s">hane min() kuralıyla</p></div>
-      <div class="stat"><p class="stat-k">Hane varlığı (Osmanlı)</p><p class="stat-v">${fmtMn(toplamVarlik)}</p><p class="stat-s">üyelerin toplamı</p></div>
-      <div class="stat"><p class="stat-k">Aksiyon bekleyen</p><p class="stat-v">${aksiyonlu}</p><p class="stat-s">hanede en az bir konu</p></div>
-    </div>
-
-    <p class="section-label">Hane listesi</p>
-    <div class="panel" style="padding:6px 10px">
-      <table>
-        <thead><tr><th>Hane</th><th class="hide-m">Üyeler</th><th>Ortak hedefler</th><th class="num hide-m">Varlık</th><th>Durum</th></tr></thead>
-        <tbody>${HANELER.map((h,i)=>{ const c=hesap[i];
-          return `<tr class="row ${h.id===sel.id?'sel':''}" onclick="navigate('haneler/${h.id}')">
-            <td><strong style="font-weight:500">${h.ad}</strong><div style="font-size:11.5px;color:var(--text-muted)">${h.sube} · son gözden geçirme ${h.sonGozden}</div></td>
-            <td class="hide-m">${h.uyeler.map(u=>`${ilkAd(u)} <span class="mono" style="font-size:12px;color:var(--text-secondary)">${fmt2(c.rp[u.id].risk)}</span>`).join(' · ')}</td>
-            <td>${c.ortak.map(o=>portBadge(o.gr.portfoy,o.g.name)).join(' ')}</td>
-            <td class="num hide-m">${fmtMn(h.uyeler.reduce((a,u)=>a+u.varlik,0))}</td>
-            <td>${c.aksiyon?`<span class="badge b-amber">${c.aksiyon} konu</span>`:`<span class="badge b-teal">Yolunda</span>`}</td></tr>`; }).join('')}
-        </tbody>
-      </table>
-    </div>
-
-    ${viewHaneDetay(sel)}
-  `;
-}
-
-function uyeKarti(u,r){
-  const bind=r.likiditeBagliyor;
-  const minVal=Math.min(r.anket,r.kap7,r.davranis);
-  return `<div class="member">
-    <div class="member-head"><div><p class="member-name">${u.ad}</p><p class="member-meta">${u.rol} · Osmanlı varlığı ${fmtMn(u.varlik)}</p></div>${portBadge(portfoySec(r.risk),'risk '+fmt2(r.risk))}</div>
-    <div class="pgrid">
-      <div class="pcell"><p class="k">Anket</p><p class="v">${fmt2(r.anket)}</p></div>
-      <div class="pcell"><p class="k">Kapasite</p><p class="v">${fmt2(r.kap7)}</p></div>
-      <div class="pcell"><p class="k">Davranış</p><p class="v">${fmt2(r.davranis)}</p></div>
-      <div class="pcell"><p class="k">Kural 1</p><p class="v">${fmt2(r.kural1)}</p></div>
-      <div class="pcell ${bind?'bind':''}"><p class="k">Likidite tavanı</p><p class="v">${fmt2(r.likiditeTavani)}</p></div>
-    </div>
-    <p style="font-size:12px;color:var(--text-secondary);margin-top:10px;line-height:1.55">
-      Tampon <strong class="mono" style="font-weight:500;color:var(--text-primary)">${String(u.kapasite.tamponAy).replace('.',',')} ay</strong>${u.kapasite.tamponAy<1?' (1 ayın altı: tavan 2,50\'de sabit)':''} ·
-      davranış ${r.davranisKaynak==='gözlem'?`son ölçüm ${u.davranisOlcumleri.at(-1).tarih} (M = ${fmt2(u.davranisOlcumleri.at(-1).M)})`:`henüz ölçülmedi, min(anket, kapasite) = ${fmt2(minVal)}`} · sıradaki yıllık ölçüm ${u.sonrakiOlcum}
-    </p>
-    ${bind?`<div class="action coral"><div><p class="t">Likidite tavanı risk skorunu sınırlıyor</p>Kural 1 ${fmt2(r.kural1)} çıkıyor, tampon ${String(u.kapasite.tamponAy).replace('.',',')} ay olduğu için skor ${fmt2(r.likiditeTavani)}'de kalıyor. ${tamponHedefi(u,r)}</div></div>`:''}
-  </div>`;
-}
-function tamponHedefi(u,r){
-  // Kural 1 değerine ulaşmak için gereken tampon (likidite bileşeninin bant değişimi kapasiteyi de değiştirir; burada yalnızca tavan tarafı)
-  const ay = 1 + (r.kural1-2.5)/4.5*5;
-  return `Tavanın Kural 1'i bağlamaması için yaklaşık <strong class="mono">${String(Math.ceil(ay*10)/10).replace('.',',')} ay</strong> tampon gerekiyor; bu artış kapasite bileşenini de yükseltebilir.`;
-}
-
-function guardHTML(g,gd,ihtiyac,kim){
-  if(!gd) return `<p style="font-size:12.5px;color:var(--text-secondary);margin-top:4px">Harcama akışı hedefi; tutar ve katkı tanımlanınca guardrail eşikleri hesaplanır.</p>`;
-  const pct=Math.min(100,g.birikenTutar/g.hedefTutar*100), aX=gd.altEsik/g.hedefTutar*100, uX=gd.ustEsik/g.hedefTutar*100;
-  const D={ yolunda:['b-teal','Plan yolunda'], alt:['b-amber','Alt eşiğin altında'], ust:['b-teal','Üst eşiğin üstünde'] }[gd.durum];
-  let act='';
-  if(gd.durum==='alt') act=`<div class="action amber"><div style="flex:1"><p class="t">Katkı artışı önerisi</p>Birikim alt eşiğin (${fmtBin(gd.altEsik)}) altında. ${kim} ile görüşülüp aylık katkının artırılması önerilir; risk otomatik yükseltilmez (B.9).</div><button class="btn primary">Onay kuyruğuna ekle</button></div>`;
-  if(gd.durum==='ust') act=`<div class="action teal"><div style="flex:1"><p class="t">Hedefin önünde · katkı düşürülmez (B.9.6)</p>${ihtiyac?`Mevcut katkıyla ${portBadge(ihtiyac)} da %95 eşiğini karşılıyor. İhtiyaç tavanı önerilebilir: danışman ve müşteri onayıyla, histerezisle.`:'Daha düşük bir model portföy %95 eşiğini karşılamıyor; yalnızca raporlanır.'} Katkı ancak müşteri isterse ve P %90'ın altına inmeyecek şekilde azaltılır.</div>${ihtiyac?`<button class="btn">Öneri hazırla</button>`:''}</div>`;
-  return `<div class="gtrack"><div class="gband" style="left:${aX}%;width:${uX-aX}%"></div><div class="gfill" style="width:${pct}%"></div></div>
-    <div class="grow"><span><span class="mono">${fmtTL(g.birikenTutar)}</span> / <span class="mono">${fmtTL(g.hedefTutar)}</span> · aylık katkı <span class="mono">${fmtTL(g.aylikKatki)}</span></span>
-      <span style="display:flex;gap:8px;align-items:center"><span title="Yalnızca danışman ekranında. Müşteriye olasılık gösterilmez (B.9.2)." style="font-size:11.5px;color:var(--text-muted)">iç P(başarı) <span class="mono">${fmtPct(Math.round(gd._p*100))}</span></span><span class="badge ${D[0]}">${D[1]}</span></span></div>
-    <p style="font-size:12px;color:var(--text-secondary);margin-top:6px">Alt eşik <strong class="mono" style="font-weight:500;color:var(--text-primary)">${fmtBin(gd.altEsik)}</strong> (P %70) · üst eşik <strong class="mono" style="font-weight:500;color:var(--text-primary)">${fmtBin(gd.ustEsik)}</strong> (P %95). Müşteri portalında yalnızca bu TL eşikleri görünür.</p>
-    ${act}`;
-}
-
-function notlar(gr){
-  const n=[];
-  if(gr.teslim) n.push(`teslim rampası: ${gr.g?'':''}hisse ×${fmt2(gr.rampa)}, fark mevduata`);
-  else if(gr.overlay>0&&gr.overlay<1) n.push(`Komite görüşü %${Math.round(gr.overlay*100)} yansıdı`);
-  else if(gr.overlay===1) n.push('Komite görüşü tam yansıdı');
-  else n.push('Komite görüşü yansımaz (vade < 2 yıl)');
-  return n;
-}
-
-function ortakHedefKarti(h,o){
-  const g=o.g, gr=o.gr;
-  const neden={ vade:`Vade tavanı (${fmt2(gr.vadeTavani)}) iki üyenin risk skorundan da düşük; hane skoru vadeden geliyor.`,
-                likidite:`Bağlayan üye ${o.baglayan.map(ilkAd).join(', ')}; skoru likidite tavanıyla sınırlı.`,
-                risk:`Bağlayan üye ${o.baglayan.map(ilkAd).join(', ')}.` }[o.nedeni];
-  const farkli=o.tekBasina.filter(t=>t.p!==gr.portfoy);
-  return `<div class="goal" style="border-left-color:${PC[gr.portfoy].bar}">
-    <div class="goal-head"><div><p class="goal-name">${g.name} <span class="badge b-grey" style="margin-left:4px">Ortak</span></p>
-      <p class="goal-meta">${g.tip==='harcama_akisi'?'Harcama akışı':'Toplu ödeme'} · ${g.vadeLabel} · hedef vadesi ${fmt2(gr.vade)} yıl (bant ${gr.vadeBandi}) · ${notlar(gr).join(' · ')}</p></div>
-      ${portBadge(gr.portfoy,fmtPct(gr.alloc.hisse)+' hisse')}</div>
-    <div class="chain">
-      <div class="h">Üye</div><div class="h">Risk skoru</div><div class="h">Vade tavanı</div><div class="h">Final_Skoru</div><div class="h">Tek başına</div>
-      ${o.uyeFinal.map(x=>{ const isMin=x.final===o.haneFinal; return `<div>${ilkAd(x.uye)}</div><div class="v">${fmt2(x.risk)}</div><div class="v">${fmt2(x.vt)}</div><div class="v ${isMin?'min':''}">${fmt2(x.final)}${isMin?' ◂':''}</div><div>${portBadge(portfoySec(x.final))}</div>`; }).join('')}
-      <div class="tot">Hane (min)</div><div class="tot"></div><div class="tot"></div><div class="tot v">${fmt2(o.haneFinal)}</div><div class="tot">${portBadge(gr.portfoy)}</div>
-    </div>
-    <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">${neden}${farkli.length?` ${farkli.map(t=>ilkAd(t.uye)).join(', ')} tek başına ${farkli.map(t=>t.p).join('/')} alırdı; ortak hedefte ihtiyatlı üye bağlar.`:''}</p>
-    ${stackedBar(gr.alloc)}${allocRow(gr.alloc)}
-    ${guardHTML(g,o.gd,o.ihtiyac,'Hane üyeleri')}
-  </div>`;
-}
-
-function bireyselKarti(b){
-  const g=b.g, gr=b.gr;
-  return `<div class="goal" style="border-left-color:${PC[gr.portfoy].bar}">
-    <div class="goal-head"><div><p class="goal-name">${g.name} <span class="badge b-grey" style="margin-left:4px">${ilkAd(b.uye)}</span></p>
-      <p class="goal-meta">${g.tip==='harcama_akisi'?'Harcama akışı':'Toplu ödeme'} · ${g.vadeLabel} · Final_Skoru ${fmt2(gr.final)}${gr.vadeTavani<haneHesapla(HANELER.find(h=>h.uyeler.includes(b.uye))).rp[b.uye.id].risk?` (vade tavanı ${fmt2(gr.vadeTavani)})`:''} · ${notlar(gr).join(' · ')}</p></div>
-      ${portBadge(gr.portfoy,fmtPct(gr.alloc.hisse)+' hisse')}</div>
-    ${stackedBar(gr.alloc)}
-    ${guardHTML(g,b.gd,b.ihtiyac,ilkAd(b.uye))}
-  </div>`;
-}
-
-function viewHaneDetay(h){
-  const c=haneHesapla(h);
-  return `
-    <p class="section-label">${h.ad} · üyeler</p>
-    <div class="panel" style="margin-bottom:12px">
-      ${riskStrip(h.uyeler.map((u,i)=>({ v:c.rp[u.id].risk, label:ilkAd(u)+' '+fmt2(c.rp[u.id].risk), ghost:i>0 })))}
-      <p class="note" style="margin-top:8px">Risk skoru = min(Kural 1, likidite tavanı). Kural 1: en düşük girdi + (orta − en düşük)/3 + (en yüksek − orta)/6. Eşikler <strong>${fmt2(PARAM.T1)}</strong> / <strong>${fmt2(PARAM.T2)}</strong>. Likidite tamponu acil durum fonunun yerini alır ve hane min() işleminin dışındadır; her üyenin kendi kapasitesine girer.</p>
-    </div>
-    <div class="member-grid">${h.uyeler.map(u=>uyeKarti(u,c.rp[u.id])).join('')}</div>
-
-    <p class="section-label">Ortak hedefler</p>
-    ${legend()}
-    ${c.ortak.map(o=>ortakHedefKarti(h,o)).join('')}
-
-    <p class="section-label">Bireysel hedefler</p>
-    ${c.bireysel.length?c.bireysel.map(bireyselKarti).join(''):'<div class="panel" style="color:var(--text-secondary)">Bireysel hedef yok.</div>'}
-
-    <p class="section-label">Bu çeyrek</p>
-    <div class="panel">
-      <div class="ind-row"><span>Yatırım Komitesi kararı · ${PARAM.KOMITE.donem}</span><span class="mono" style="font-size:12.5px">${['P1','P2','P3'].map(p=>`${p} %${PARAM.PORT[p].hisse}→<strong>%${PARAM.KOMITE.karar[p]}</strong>`).join(' · ')}</span></div>
-      <div class="ind-row"><span>Yeniden dengeleme eşiği</span><span class="mono">${PARAM.REBALANS_ESIK} puan · hedef bazında</span></div>
-      ${h.uyeler.map(u=>`<div class="ind-row"><span>${u.ad} · yıllık davranış ölçümü</span><span>${c.rp[u.id].davranisKaynak==='gözlem'?`<span class="badge b-teal">Son: ${u.davranisOlcumleri.at(-1).tarih}</span>`:'<span class="badge b-grey">İlk ölçüm bekleniyor</span>'} <span style="font-size:12px;color:var(--text-muted);margin-left:6px">sıradaki ${u.sonrakiOlcum}</span></span></div>`).join('')}
-    </div>
-  `;
-}
-
-function viewPlaceholder(r){
-  return `<div class="empty"><p class="page-title" style="margin-bottom:6px">${({'ana-panel':'Ana panel',musteriler:'Müşterilerim','onay-kuyrugu':'Onay kuyruğu',portfoy:'Portföy yönetimi',raporlar:'Raporlar'})[r]||''}</p>
-    <p>Bu dosya yalnızca Haneler sayfasının v3 güncellemesini içeriyor.</p><p style="margin-top:14px"><button class="btn primary" onclick="navigate('haneler')">Haneler'e git</button></p></div>`;
-}
-
-/* ===================== Router ===================== */
-function navigate(route){ location.hash='#/'+route; }
-function render(){
-  const hash=location.hash.replace('#/','')||'haneler';
-  const [root,id]=hash.split('/');
-  document.getElementById('sidebar').classList.remove('open');
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.route===root));
-  const c=document.getElementById('content');
-  c.innerHTML = root==='haneler' ? viewHaneler(id) : viewPlaceholder(root);
-  window.scrollTo(0,0);
-}
-document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click',()=>navigate(el.dataset.route)));
-document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
-window.addEventListener('hashchange',render);
-render();
-</script>
+<script src="app.js"></script>
+<script src="haneler-v3.js"></script>
 </body>
 </html>
